@@ -1,7 +1,7 @@
 import logging
-    from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-    from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
-    import requests
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
+import requests
 
     TOKEN = "8060903040:AAFy5FEEikLpeSNuTheH75zhhFIPmR7EM5Q"
 
