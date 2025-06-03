@@ -1,50 +1,52 @@
+
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 import requests
 
-    TOKEN = "8060903040:AAFy5FEEikLpeSNuTheH75zhhFIPmR7EM5Q"
+TOKEN = "8060903040:AAFy5FEEikLpeSNuTheH75zhhFIPmR7EM5Q"
 
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-    logger = logging.getLogger(__name__)
+logging.basicConfig(
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.INFO
+)
+logger = logging.getLogger(__name__)
 
-    async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        keyboard = [
-            [InlineKeyboardButton("📈 قیمت و چارت", callback_data='price')],
-            [InlineKeyboardButton("📰 اخبار مهم بازار", callback_data='news')],
-            [InlineKeyboardButton("🐋 اخبار نهنگی", callback_data='whales')],
-            [InlineKeyboardButton("💵 اخبار اقتصادی", callback_data='economy')],
-            [InlineKeyboardButton("🔍 جستجوی خبر توکن", callback_data='token')],
-        ]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        await update.message.reply_text("به ربات کریپتوی شخصی خوش اومدی! یکی از گزینه‌ها رو انتخاب کن:", reply_markup=reply_markup)
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    keyboard = [
+        [InlineKeyboardButton("📉 قیمت رمزارز", callback_data="price")],
+        [InlineKeyboardButton("📰 اخبار مهم روز", callback_data="news")],
+        [InlineKeyboardButton("🐋 تحلیل نهنگ‌ها", callback_data="whales")],
+        [InlineKeyboardButton("📊 اخبار اقتصادی", callback_data="economy")],
+        [InlineKeyboardButton("🪙 جستجوی توکن", callback_data="token")],
+    ]
 
-    async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        query = update.callback_query
-        await query.answer()
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text("یه دکمه انتخاب کن:", reply_markup=reply_markup)
 
-        if query.data == "price":
-            await query.edit_message_text("لطفاً نماد ارز دیجیتال رو ارسال کن. مثال: BTC")
-        elif query.data == "news":
-            await query.edit_message_text("📢 آخرین اخبار مهم بازار:
-(در این نسخه اولیه فقط نمونه‌ها نمایش داده می‌شود)")
-        elif query.data == "whales":
-            await query.edit_message_text("🔍 آخرین فعالیت‌های نهنگ‌ها:
-(در این نسخه اولیه فقط نمونه‌ها نمایش داده می‌شود)")
-        elif query.data == "economy":
-            await query.edit_message_text("💼 آخرین اخبار اقتصادی جهانی:
-(در این نسخه اولیه فقط نمونه‌ها نمایش داده می‌شود)")
-        elif query.data == "token":
-            await query.edit_message_text("🔍 لطفاً نماد ارزی که می‌خوای خبرش رو ببینی وارد کن. مثال: ETH")
+async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
 
-    def main():
-        app = ApplicationBuilder().token(TOKEN).build()
+    if query.data == "price":
+        await query.edit_message_text("مثلاً قیمت لحظه‌ای بیت‌کوین: BTC $...")
+    elif query.data == "news":
+        await query.edit_message_text("تازه‌ترین اخبار بازار کریپتو...")
+    elif query.data == "whales":
+        await query.edit_message_text("تحلیل نهنگ‌های بازار...")
+    elif query.data == "economy":
+        await query.edit_message_text("اخبار مهم اقتصاد جهانی...")
+    elif query.data == "token":
+        await query.edit_message_text("اسم توکن رو بفرست تا اخبارش بیاد. مثال: ETH")
 
-        app.add_handler(CommandHandler("start", start))
-        app.add_handler(CallbackQueryHandler(button))
+def main():
+    app = ApplicationBuilder().token(TOKEN).build()
 
-        print("ربات آماده اجراست.")
-        app.run_polling()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(button))
 
-    if __name__ == '__main__':
-        main()
+    print("ربات راه‌اندازی شد")
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
